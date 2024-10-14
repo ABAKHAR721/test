@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   project_heart:
-    image: abakhar217/abakhar:${BUILD_NUMBER}_HEART
+    image: abakhar217/abakhar:${BUILD_NUMBER}_Heart
     ports:
       - "5001:5000"
 
