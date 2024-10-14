@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  project_heart:
+    image: abakhar217/abakhar:${BUILD_NUMBER}_HEART
+    ports:
+      - "5001:5000"
+
+  project_book:
+    image: abakhar217/abakhar:${BUILD_NUMBER}
+    ports:
+      - "5000:5000"

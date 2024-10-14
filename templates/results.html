@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommendations</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Include Font Awesome for star icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='results.css') }}">
+    
+</head>
+<body>
+    <div class="container">
+        <div class="header-row mt-4 mb-4">
+            <h1 class="mb-0">Recommended Books</h1>
+            <a href="/" class="btn btn-primary">Back to search</a>
+        </div>
+        <div class="row">
+            {% for book in recommendations %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">{{ book.Name }}</h5>
+                        <div class="star-rating">
+                            {% for i in range(1, 6) %}
+                                <i class="fa{% if i <= book.Rating %}s{% else %}r{% endif %} fa-star"></i>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">{{ book.Authors }}</h6>
+                        <p class="card-text"><strong>Publish Year:</strong> {{ book.PublishYear }}</p>
+                        <p class="card-text"><strong>Publisher:</strong> {{ book.Publisher }}</p>
+                        <p class="card-text description-truncate" id="desc-{{ loop.index }}">
+                            {{ book.Description[:50] }}...
+                        </p>
+                        <p class="card-text description-full" id="full-desc-{{ loop.index }}">
+                            {{ book.Description }}
+                        </p>
+                        <a href="#" class="read-more" data-toggle="description" data-target="desc-{{ loop.index }}" data-full="full-desc-{{ loop.index }}">Read More</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var readMoreLinks = document.querySelectorAll('.read-more');
+
+            readMoreLinks.forEach(function(link) {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+
+                    var targetId = this.getAttribute('data-target');
+                    var fullId = this.getAttribute('data-full');
+
+                    var targetElement = document.getElementById(targetId);
+                    var fullElement = document.getElementById(fullId);
+
+                    if (targetElement.style.display === 'none') {
+                        targetElement.style.display = 'block';
+                        fullElement.style.display = 'none';
+                        this.textContent = 'Read More';
+                    } else {
+                        targetElement.style.display = 'none';
+                        fullElement.style.display = 'block';
+                        this.textContent = 'Read Less';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
