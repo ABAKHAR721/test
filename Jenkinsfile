@@ -3,7 +3,11 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                sh "docker build -t abakhar217/abakhar:${env.BUILD_NUMBER}_Heart ."
+                script {
+                    retry(3) {
+                        sh "docker build -t abakhar217/abakhar:${env.BUILD_NUMBER}_Heart ."
+                    }
+                }
                 withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'dockerpassword', usernameVariable: 'dockeruser')]) {
                     sh "docker login -u $dockeruser -p $dockerpassword"
                     sh "docker push abakhar217/abakhar:${env.BUILD_NUMBER}_Heart"
@@ -31,7 +35,7 @@ pipeline {
                     spec:
                       containers:
                       - name: abakhar-heart-container
-                        image: abakhar217/abakhar:${BUILD_NUMBER}_Heart
+                        image: abakhar217/abakhar:${env.BUILD_NUMBER}_Heart
                         ports:
                         - containerPort: 5000
                 EOF
