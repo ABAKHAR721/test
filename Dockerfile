@@ -19,5 +19,7 @@ COPY . .
 # Expose the port the app runs on
 EXPOSE 5000
 
+ENV FLASK_ENV=production
+
 # Command to run the application
 CMD ["python", "app.py"]
