@@ -1,6 +1,6 @@
 pipeline{
     agent{
-        label 'agent1'
+        label 'lsi_agent'
     } 
     stages{
         stage('build'){
